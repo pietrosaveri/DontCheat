@@ -2,12 +2,12 @@ import threading
 import time
 import os
 from pynput import mouse
-from screenshot_handler import capture_screenshot
-from notification_handler import show_notification
+from handlers.screenshot_handler import capture_screenshot
+from handlers.notification_handler import show_notification
 
 # Import both handlers
-import groq_handler
-import gemini_handler
+import handlers.groq_handler as groq_handler
+import handlers.gemini_handler as gemini_handler
 
 # Choose which AI provider to use: 'groq' or 'gemini'
 AI_PROVIDER = os.environ.get('AI_PROVIDER', 'groq').lower()
