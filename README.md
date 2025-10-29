@@ -4,6 +4,7 @@ DontCheat is a software made to not cheat during exams.
 **Start it, click 3 times, and that's it.**
 
 **Invisible, fast, not detectable.**
+![llight](https://github.com/user-attachments/assets/f9611500-4237-416c-a2fe-dc2ac71a7104)
 
 ## How does it work?
 
