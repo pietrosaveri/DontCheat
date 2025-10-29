@@ -1,4 +1,9 @@
-DontCheat is an software made to not each during exams.
+# What is this?
+DontCheat is a software made to not cheat during exams.
+
+**Start it, click 3 times, and that's it.**
+
+**Invisible, fast, not detectable.**
 
 ## How does it work?
 
