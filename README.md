@@ -55,4 +55,4 @@ Wait you forgot if it is on or off? dont worry my friend I got you, just run the
 ./status.sh
 ```
 
-**Do not use this software to cheat on exams, this is made because i needed it for an exam.**
+**Do not use this software to cheat on exams, this was made because I needed it for an exam.**
