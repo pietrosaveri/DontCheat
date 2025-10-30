@@ -18,6 +18,9 @@ CRITICAL RULES:
 5. For true/false: just say "True" or "False"
 6. Maximum 2-3 words per answer when possible
 7. Be extremely brief and direct
+8. If no questions are found in the image, return exactly: "no questions found"
+9. If a question is open-ended (not multiple choice), return the complete text answer exactly as it should appear.
+
 
 Example format:
 1. Safe Edit
