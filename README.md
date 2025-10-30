@@ -1,6 +1,8 @@
 # What is this?
 DontCheat is a software made to not cheat during exams.
 
+**Specialized for MongoDB & Neo4j database questions.**
+
 **Start it, click 3 times, and that's it.**
 
 **Invisible, fast, not detectable.**
@@ -15,6 +17,19 @@ In the `.env` file you can choose which one to use, with the variable `AI_PROVID
 You will need acess to VLM, in this project i use `"gemini-2.5-flash"` since it is very good and has a high limit for free users.
 
 This software is made to be complety invisible, so you do not need to keep vs code open or even the terminal.
+
+### 🎯 Bonus: Custom Instructions (Shift + any gesture)
+* Hold **Shift** key with any of the above gestures
+* Opens a dialog where you can enter custom instructions for the AI
+* Examples: 
+  - "Explain the query step-by-step"
+  - "Show the query execution plan"
+  - "Include aggregation pipeline explanation"
+  - "Show alternative Cypher query"
+* Works with all three gestures:
+  - **Shift + 3-tap**: Custom instruction for instant analysis
+  - **Shift + Option + 3-tap**: Custom instruction + save reference
+  - **Shift + Control + 3-tap**: Custom instruction + analyze with reference
 
 ## But how do we use it? (not to cheat of course)
 
@@ -42,7 +57,8 @@ This incredible software supports **three different gestures** for maximum not c
 ### Gesture 1: Instant Analysis (Normal 3-tap)
 * Click anywhere on the screen **3 times** fast
 * Takes screenshot and immediately analyzes it
-* Perfect for standalone questions (not of exams)
+* Perfect for standalone MongoDB/Neo4j questions
+* Returns: queries, outputs, or multiple choice answers
 
 ### Gesture 2: Save Reference Context (Option + 3-tap)
 * Hold **Option/Alt** key and click **3 times** fast
