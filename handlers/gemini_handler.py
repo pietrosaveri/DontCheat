@@ -30,12 +30,13 @@ Example format:
 
 DO NOT include any reasoning, steps, or explanations."""
 
-def analyze_screenshot(image_path):
+def analyze_screenshot(image_path, reference_image_path=None):
     """
     Analyze a screenshot using Google's Gemini VLM API.
     
     Args:
         image_path: Path to the screenshot image
+        reference_image_path: Optional path to reference context image
         
     Returns:
         str: The AI's answer, or None if failed
@@ -53,14 +54,25 @@ def analyze_screenshot(image_path):
         # Initialize the model (using Gemini 1.5 Flash for speed, or use 'gemini-1.5-pro' for better quality)
         model = genai.GenerativeModel('gemini-2.5-flash')
         
-        # Open the image
+        # Open the main image
         image = Image.open(image_path)
         
-        # Create the prompt
-        prompt = f"{SYSTEM_PROMPT}\n\nPlease analyze this image and answer any questions or problems you see."
+        # Build content list
+        content = [SYSTEM_PROMPT]
+        
+        # Add reference image and context if provided
+        if reference_image_path and os.path.exists(reference_image_path):
+            reference_image = Image.open(reference_image_path)
+            content.append("\n\nThis is the reference context/passage:")
+            content.append(reference_image)
+            content.append("\n\nUsing the reference context above, please answer the question(s) in this image:")
+            content.append(image)
+        else:
+            content.append("\n\nPlease analyze this image and answer any questions or problems you see.")
+            content.append(image)
         
         # Generate response
-        response = model.generate_content([prompt, image])
+        response = model.generate_content(content)
         
         # Extract the answer
         answer = response.text

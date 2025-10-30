@@ -26,12 +26,13 @@ Example format:
 
 DO NOT include any reasoning, steps, or explanations."""
 
-def analyze_screenshot(image_path):
+def analyze_screenshot(image_path, reference_image_path=None):
     """
     Analyze a screenshot using Groq's VLM API.
     
     Args:
         image_path: Path to the screenshot image
+        reference_image_path: Optional path to reference context image
         
     Returns:
         str: The AI's answer, or None if failed
@@ -46,9 +47,47 @@ def analyze_screenshot(image_path):
         # Initialize Groq client
         client = Groq(api_key=api_key)
         
-        # Read and encode image
+        # Read and encode main image
         with open(image_path, 'rb') as image_file:
             image_data = base64.b64encode(image_file.read()).decode('utf-8')
+        
+        # Build user content
+        user_content = []
+        
+        # Add reference image first if provided
+        if reference_image_path and os.path.exists(reference_image_path):
+            with open(reference_image_path, 'rb') as ref_file:
+                ref_data = base64.b64encode(ref_file.read()).decode('utf-8')
+            user_content.append({
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:image/png;base64,{ref_data}"
+                }
+            })
+            user_content.append({
+                "type": "text",
+                "text": "This is the reference context/passage:"
+            })
+        
+        # Add main question image
+        user_content.append({
+            "type": "image_url",
+            "image_url": {
+                "url": f"data:image/png;base64,{image_data}"
+            }
+        })
+        
+        # Add instruction text
+        if reference_image_path:
+            user_content.append({
+                "type": "text",
+                "text": "Using the reference context above, please answer the question(s) in this image."
+            })
+        else:
+            user_content.append({
+                "type": "text",
+                "text": "Please analyze this image and answer any questions or problems you see."
+            })
         
         # Create the API request
         response = client.chat.completions.create(
@@ -60,18 +99,7 @@ def analyze_screenshot(image_path):
                 },
                 {
                     "role": "user",
-                    "content": [
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:image/png;base64,{image_data}"
-                            }
-                        },
-                        {
-                            "type": "text",
-                            "text": "Please analyze this image and answer any questions or problems you see."
-                        }
-                    ]
+                    "content": user_content
                 }
             ],
             temperature=0.3,

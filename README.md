@@ -36,13 +36,27 @@ Now we are ready to go, just run the `start.sh` script with the terminal:
 And the software will be running silently in the background you can even close the terminal if you want to. (but will have to remember to stop it later)
 
 ## What does it do?
-The software is easy: 
-* Click anywhere in the screen **3 times** fast.
-* That's it.
 
-The software will take a screenshot and send to the groq API to be analized by the VLM model, the model will return a banner notification with a very minimal answer, that could be an answer to a questions or something else idk.
+This incredible software supports **three different gestures** for maximum not cheating activities:
 
-You can continue to take screenshots and get this answers as many times as you want.
+### Gesture 1: Instant Analysis (Normal 3-tap)
+* Click anywhere on the screen **3 times** fast
+* Takes screenshot and immediately analyzes it
+* Perfect for standalone questions (not of exams)
+
+### Gesture 2: Save Reference Context (Option + 3-tap)
+* Hold **Option/Alt** key and click **3 times** fast
+* Saves screenshot as reference context for future questions
+* Use this for long passages/texts that multiple questions reference
+* Replaces previous reference if you do it again
+
+### Gesture 3: Analyze with Context (Control + 3-tap)
+* Hold **Control** key and click **3 times** fast
+* Takes screenshot of the question and analyzes it WITH the saved reference
+* Perfect for answering multiple questions about the same passage
+* Repeat as many times as needed
+
+You can use any gesture as many times as you want.
 when you want to stop the software just run the `stop.sh` script and it will stop.
 
 ```bash
