@@ -54,7 +54,7 @@ def analyze_screenshot(image_path, reference_image_path=None):
         genai.configure(api_key=api_key)
         
         # Initialize the model (using Gemini 1.5 Flash for speed, or use 'gemini-1.5-pro' for better quality)
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-pro')
         
         # Open the main image
         image = Image.open(image_path)
