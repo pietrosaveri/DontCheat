@@ -1,6 +1,9 @@
 # Screenshots
 .screenshots/
-screenshots/
+
+
+screenshots/*
+
 
 # Environment variables
 .env
