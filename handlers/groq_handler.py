@@ -33,7 +33,7 @@ DO NOT include any reasoning, steps, methodology, or explanations - only provide
 
 def analyze_screenshot(image_path, reference_image_path=None):
     """
-    Analyze a screenshot using Groq's VLM API.
+    Analyze a screenshot using Groq's VLM API.de
     
     Args:
         image_path: Path to the screenshot image
