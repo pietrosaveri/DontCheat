@@ -5,11 +5,12 @@ from pynput import mouse, keyboard
 from handlers.screenshot_handler import capture_screenshot
 from handlers.notification_handler import show_notification
 
-# Import both handlers
+# Import handlers
 import handlers.groq_handler as groq_handler
 import handlers.gemini_handler as gemini_handler
+import handlers.lm_studio_handler as lm_studio_handler
 
-# Choose which AI provider to use: 'groq' or 'gemini'
+# Choose which AI provider to use: 'groq', 'gemini', or 'lm_studio'
 AI_PROVIDER = os.environ.get('AI_PROVIDER', 'groq').lower()
 
 class ClickDetector:
@@ -184,6 +185,9 @@ class ClickDetector:
             if AI_PROVIDER == 'gemini':
                 print("Analyzing with Gemini VLM (with reference)...")
                 answer = gemini_handler.analyze_screenshot(screenshot_path, self.reference_image_path)
+            elif AI_PROVIDER == 'lm_studio':
+                print("Analyzing with LM Studio (with reference)...")
+                answer = lm_studio_handler.analyze_screenshot(screenshot_path, self.reference_image_path)
             else:
                 print("Analyzing with Groq VLM (with reference)...")
                 answer = groq_handler.analyze_screenshot(screenshot_path, self.reference_image_path)
@@ -224,6 +228,9 @@ class ClickDetector:
             if AI_PROVIDER == 'gemini':
                 print("Analyzing with Gemini VLM...")
                 answer = gemini_handler.analyze_screenshot(screenshot_path)
+            elif AI_PROVIDER == 'lm_studio':
+                print("Analyzing with LM Studio...")
+                answer = lm_studio_handler.analyze_screenshot(screenshot_path)
             else:
                 print("Analyzing with Groq VLM...")
                 answer = groq_handler.analyze_screenshot(screenshot_path)

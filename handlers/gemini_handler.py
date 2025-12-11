@@ -53,11 +53,15 @@ def analyze_screenshot(image_path, reference_image_path=None):
         # Configure Gemini
         genai.configure(api_key=api_key)
         
-        # Initialize the model (using Gemini 1.5 Flash for speed, or use 'gemini-1.5-pro' for better quality)
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        # Initialize the model (using Gemini 1.5 Flash for speed)
+        model = genai.GenerativeModel('gemini-2.5-flash-live')
         
         # Open the main image
         image = Image.open(image_path)
+        
+        # Optimize image for speed (resize if too large)
+        if image.width > 1024 or image.height > 1024:
+            image.thumbnail((1024, 1024))
         
         # Build content list
         content = [SYSTEM_PROMPT]
@@ -65,6 +69,10 @@ def analyze_screenshot(image_path, reference_image_path=None):
         # Add reference image and context if provided
         if reference_image_path and os.path.exists(reference_image_path):
             reference_image = Image.open(reference_image_path)
+            # Optimize reference image too
+            if reference_image.width > 1024 or reference_image.height > 1024:
+                reference_image.thumbnail((1024, 1024))
+                
             content.append("\n\nThis is the reference context/passage:")
             content.append(reference_image)
             content.append("\n\nUsing the reference context above, please answer the question(s) in this image:")

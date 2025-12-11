@@ -2,7 +2,7 @@ import os
 import base64
 import io
 from PIL import Image
-from groq import Groq
+from openai import OpenAI
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -35,7 +35,7 @@ DO NOT include any reasoning, steps, methodology, or explanations - only provide
 
 def analyze_screenshot(image_path, reference_image_path=None):
     """
-    Analyze a screenshot using Groq's VLM API.
+    Analyze a screenshot using a local LLM via LM Studio (OpenAI-compatible API).
     
     Args:
         image_path: Path to the screenshot image
@@ -45,23 +45,21 @@ def analyze_screenshot(image_path, reference_image_path=None):
         str: The AI's answer, or None if failed
     """
     try:
-        # Get API key from environment
-        api_key = os.environ.get('GROQ_API_KEY')
-        if not api_key:
-            print("ERROR: GROQ_API_KEY not found in environment variables")
-            return "Error: Groq API key not configured"
+        # Get configuration from environment or use defaults
+        base_url = os.environ.get('LM_STUDIO_BASE_URL', 'http://localhost:1234/v1')
+        api_key = os.environ.get('LM_STUDIO_API_KEY', 'lm-studio') # Key usually doesn't matter for local
+
         
-        # Initialize Groq client
-        client = Groq(api_key=api_key)
+        # Initialize OpenAI client pointing to local LM Studio
+        client = OpenAI(base_url=base_url, api_key=api_key)
         
         def encode_image(path):
             """Resize and encode image to base64"""
             with Image.open(path) as img:
-                # Resize if too large (max 1024x1024)
-                if img.width > 1024 or img.height > 1024:
-                    img.thumbnail((1024, 1024))
+                # Normalize to 896x896 resolution
+                img.thumbnail((896, 896))
                 
-                # Convert to JPEG for smaller size
+                # Convert to RGB if needed
                 if img.mode in ('RGBA', 'P'):
                     img = img.convert('RGB')
                 
@@ -110,8 +108,10 @@ def analyze_screenshot(image_path, reference_image_path=None):
             })
         
         # Create the API request
+        # Note: 'model' parameter often ignored by LM Studio if only one model is loaded,
+        # but good to specify a generic one or the one loaded.
         response = client.chat.completions.create(
-            model="llama-3.2-11b-vision-preview",  # Groq's fast vision model
+            model="local-model", 
             messages=[
                 {
                     "role": "system",
@@ -122,8 +122,8 @@ def analyze_screenshot(image_path, reference_image_path=None):
                     "content": user_content
                 }
             ],
-            temperature=0.1,
-            max_tokens=1024,
+            temperature=0.3,
+            max_tokens=1000,
         )
         
         # Extract the answer
@@ -131,5 +131,5 @@ def analyze_screenshot(image_path, reference_image_path=None):
         return answer
         
     except Exception as e:
-        print(f"Error analyzing screenshot with Groq: {e}")
+        print(f"Error analyzing screenshot with LM Studio: {e}")
         return f"Error: {str(e)}"
